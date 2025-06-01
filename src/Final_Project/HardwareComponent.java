@@ -1,11 +1,11 @@
 package Final_Project;
 
 public class HardwareComponent {
-    private String name;
-    private String type; // CPU or GPU
-    private double clockSpeedGHz;
-    private int cacheMB;
-    private int powerWatt;
+    private final String name;
+    private final String type; // CPU or GPU
+    private final double clockSpeedGHz;
+    private final int cacheMB;
+    private final int powerWatt;
 
     public HardwareComponent(String name, String type, double clockSpeedGHz, int cacheMB, int powerWatt) {
         this.name = name;
@@ -38,6 +38,6 @@ public class HardwareComponent {
     @Override
     public String toString() {
         return name + " (" + type + ") - " + clockSpeedGHz + "GHz, " +
-               cacheMB + "MB cache, " + powerWatt + "W";
+                cacheMB + "MB cache, " + powerWatt + "W";
     }
 }

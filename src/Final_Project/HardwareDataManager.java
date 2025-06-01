@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Scanner;
 
 public class HardwareDataManager {
-    private List<HardwareComponent> components = new ArrayList<>();
+    private final List<HardwareComponent> components = new ArrayList<>();
 
     public void loadFromFile(String filename) {
         components.clear();
@@ -35,8 +35,8 @@ public class HardwareDataManager {
         try (FileWriter writer = new FileWriter(filename)) {
             for (HardwareComponent hc : components) {
                 writer.write(hc.getName() + "," + hc.getType() + "," +
-                             hc.getClockSpeedGHz() + "," + hc.getCacheMB() + "," +
-                             hc.getPowerWatt() + "\n");
+                        hc.getClockSpeedGHz() + "," + hc.getCacheMB() + "," +
+                        hc.getPowerWatt() + "\n");
             }
         } catch (IOException e) {
             System.out.println("Error writing to file: " + e.getMessage());
