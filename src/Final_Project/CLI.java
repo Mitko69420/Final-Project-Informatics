@@ -1,3 +1,5 @@
+package Final_Project;
+
 import java.util.Scanner;
 
 public class CLI {

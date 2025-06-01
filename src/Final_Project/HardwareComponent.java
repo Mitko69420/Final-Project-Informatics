@@ -1,3 +1,5 @@
+package Final_Project;
+
 public class HardwareComponent {
     private String name;
     private String type; // CPU or GPU
