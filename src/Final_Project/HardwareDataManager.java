@@ -11,8 +11,24 @@ public class HardwareDataManager {
     private final List<HardwareComponent> components = new ArrayList<>();
 
     public void loadFromFile(String filename) {
-        components.clear();
-        try (Scanner scanner = new Scanner(new File(filename))) {
+        File file = new File(filename);
+
+        if (!file.exists()) {
+            try (FileWriter writer = new FileWriter(file)) {
+                writer.write("Ryzen 5 5600X,CPU,3.7,32,65\n");
+                writer.write("Intel i5-12400F,CPU,2.5,20,65\n");
+                writer.write("Intel i7-13700K,CPU,3.4,30,125\n");
+                writer.write("RTX 3060,GPU,1.8,12,170\n");
+                writer.write("RX 6700 XT,GPU,2.4,16,230\n");
+                writer.write("RX 7600,GPU,2.6,8,165\n");
+                System.out.println("File not found. 'hardware.txt' was created with default components.");
+            } catch (IOException e) {
+                System.out.println("Failed to create hardware.txt: " + e.getMessage());
+            }
+        }
+
+        try (Scanner scanner = new Scanner(file)) {
+            components.clear();
             while (scanner.hasNextLine()) {
                 String line = scanner.nextLine();
                 String[] parts = line.split(",");
