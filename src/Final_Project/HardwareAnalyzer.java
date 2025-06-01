@@ -8,7 +8,8 @@ public class HardwareAnalyzer {
 
         String result = "Comparing " + h1.getName() + " vs. " + h2.getName() + ":\n";
 
-        double clockDiff = Math.abs(h1.getClockSpeed() - h2.getClockSpeed());
+        double clockDiffRaw = Math.abs(h1.getClockSpeed() - h2.getClockSpeed());
+        String clockDiff = String.format("%.1f", clockDiffRaw);
         int cacheDiff = Math.abs(h1.getCache() - h2.getCache());
         int powerDiff = Math.abs(h1.getPower() - h2.getPower());
 
@@ -41,13 +42,18 @@ public class HardwareAnalyzer {
 
         // Simple performance score
         double score1 = h1.getClockSpeed() * h1.getCache();
-        double score2 = h2.getClockSpeed() * h2.getCache();
+double score2 = h2.getClockSpeed() * h2.getCache();
 
-        result += (score1 > score2)
-                ? h1.getName() + " is overall better.\n"
-                : (score2 > score1)
-                ? h2.getName() + " is overall better.\n"
-                : "Both have the same overall score.\n";
+String formatted1 = String.format("%.1f", score1);
+String formatted2 = String.format("%.1f", score2);
+
+if (score1 > score2) {
+    result += h1.getName() + " is overall better (Score: " + formatted1 + " vs. " + formatted2 + ").\n";
+} else if (score2 > score1) {
+    result += h2.getName() + " is overall better (Score: " + formatted2 + " vs. " + formatted1 + ").\n";
+} else {
+    result += "Both have the same overall score (" + formatted1 + ").\n";
+}
 
         return result;
     }
