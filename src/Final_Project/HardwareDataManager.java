@@ -13,6 +13,7 @@ public class HardwareDataManager {
     public void loadFromFile(String filename) {
         File file = new File(filename);
 
+        //predvaritelni danni
         if (!file.exists()) {
             try (FileWriter writer = new FileWriter(file)) {
                 writer.write("Ryzen 5 5600X,CPU,3.7,32,65\n");
@@ -26,7 +27,7 @@ public class HardwareDataManager {
                 System.out.println("Failed to create hardware.txt: " + e.getMessage());
             }
         }
-
+        //Reader
         try (Scanner scanner = new Scanner(file)) {
             components.clear();
             while (scanner.hasNextLine()) {
@@ -47,12 +48,13 @@ public class HardwareDataManager {
         }
     }
 
+    //writer
     public void saveToFile(String filename) {
         try (FileWriter writer = new FileWriter(filename)) {
             for (HardwareComponent hc : components) {
                 writer.write(hc.getName() + "," + hc.getType() + "," +
-                        hc.getClockSpeedGHz() + "," + hc.getCacheMB() + "," +
-                        hc.getPowerWatt() + "\n");
+                        hc.getClockSpeed() + "," + hc.getCache() + "," +
+                        hc.getPower() + "\n");
             }
         } catch (IOException e) {
             System.out.println("Error writing to file: " + e.getMessage());
