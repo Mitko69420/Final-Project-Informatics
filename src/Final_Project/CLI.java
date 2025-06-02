@@ -42,9 +42,8 @@ public class CLI {
                     System.out.println(HardwareAnalyzer.compare(h1, h2));
                     if (h1 == null || h2 == null) {
                         System.out.println("One or both components not found.");
-                        break;
                     }
-
+                    break;
                 }
 
                 case 3: {
