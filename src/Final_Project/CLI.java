@@ -40,7 +40,11 @@ public class CLI {
                     System.out.print("Enter name of second component: ");
                     HardwareComponent h2 = manager.findByName(sc.nextLine());
                     System.out.println(HardwareAnalyzer.compare(h1, h2));
-                    break;
+                    if (h1 == null || h2 == null) {
+                        System.out.println("One or both components not found.");
+                        break;
+                    }
+
                 }
 
                 case 3: {
@@ -56,12 +60,22 @@ public class CLI {
                     String name = sc.nextLine();
                     System.out.print("Type (CPU/GPU): ");
                     String type = sc.nextLine();
-                    System.out.print("Clock Speed (GHz): ");
-                    double clock = Double.parseDouble(sc.nextLine());
-                    System.out.print("Cache (MB): ");
-                    int cache = Integer.parseInt(sc.nextLine());
-                    System.out.print("Power (Watt): ");
-                    int power = Integer.parseInt(sc.nextLine());
+                    double clock = 0;
+                    int cache = 0, power = 0;
+
+                    //handle errors
+                    try {
+                        System.out.print("Clock Speed (GHz): ");
+                        clock = Double.parseDouble(sc.nextLine());
+                        System.out.print("Cache (MB): ");
+                        cache = Integer.parseInt(sc.nextLine());
+                        System.out.print("Power (Watt): ");
+                        power = Integer.parseInt(sc.nextLine());
+                    } catch (NumberFormatException e) {
+                        System.out.println("Invalid number input");
+                        break;
+                    }
+
 
                     HardwareComponent newComponent = new HardwareComponent(type, clock, cache, power) {
                         @Override

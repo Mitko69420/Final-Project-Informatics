@@ -97,9 +97,14 @@ public class HardwareDataManager {
 
 
     public void addComponent(HardwareComponent hc) {
-        if (hc != null) {
-            components.add(hc);
+        for (HardwareComponent c : components) {
+            if (c.getName().equalsIgnoreCase(hc.getName())) {
+                System.out.println("Component with this name already exists.");
+                return;
+            }
         }
+    components.add(hc);
+
     }
 
     public HardwareComponent findByName(String name) {
