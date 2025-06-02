@@ -15,6 +15,7 @@ public class CLI {
             System.out.println("3. Suggest Upgrade");
             System.out.println("4. Add New Component");
             System.out.println("5. Save and Exit");
+            System.out.println("6. Sort Components by Performance");
             System.out.print("Choose an option: ");
             String input = sc.nextLine();
 
@@ -62,7 +63,12 @@ public class CLI {
                     System.out.print("Power (Watt): ");
                     int power = Integer.parseInt(sc.nextLine());
 
-                    HardwareComponent newComponent = new HardwareComponent(name, type, clock, cache, power);
+                    HardwareComponent newComponent = new HardwareComponent(name, type, clock, cache, power) {
+                        @Override
+                        public String getType() {
+                            return "";
+                        }
+                    };
                     manager.addComponent(newComponent);
                     System.out.println("Component added.");
                     break;
@@ -74,6 +80,15 @@ public class CLI {
                     sc.close();
                     return;
                 }
+                case 6: {
+                    manager.sortByPerformanceDescending();
+                    System.out.println("Components sorted by performance:");
+                    for (HardwareComponent hc : manager.getComponents()) {
+                        System.out.println(hc);
+                    }
+                    break;
+                }
+
                 default: {
                     if (option != -1) {
                         System.out.println("Invalid option");

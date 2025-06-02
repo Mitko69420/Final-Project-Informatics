@@ -1,26 +1,22 @@
 package Final_Project;
 
-public class HardwareComponent {
-    private final String name;
-    private final String type; // CPU or GPU
-    private final double clockSpeed;
-    private final int cache;
-    private final int power;
+public abstract class HardwareComponent {
+    private String name;
+    private double clockSpeed;
+    private int cache;
+    private int power;
 
-    public HardwareComponent(String name, String type, double clockSpeed, int cache, int power) {
+    public HardwareComponent(String s, String name, double clockSpeed, int cache, int power) {
         this.name = name;
-        this.type = type;
         this.clockSpeed = clockSpeed;
         this.cache = cache;
         this.power = power;
     }
 
+    public abstract String getType();
+
     public String getName() {
         return name;
-    }
-
-    public String getType() {
-        return type;
     }
 
     public double getClockSpeed() {
@@ -37,7 +33,6 @@ public class HardwareComponent {
 
     @Override
     public String toString() {
-        return name + " (" + type + ") - " + clockSpeed + "GHz, " +
-                cache + "MB cache, " + power + "W";
+        return name + " " + clockSpeed + "GHz, " + cache + "MB cache, " + power + "W";
     }
 }
