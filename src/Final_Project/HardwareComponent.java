@@ -1,12 +1,12 @@
 package Final_Project;
 
 public abstract class HardwareComponent {
-    private String name;
-    private double clockSpeed;
-    private int cache;
-    private int power;
+    private final String name;
+    private final double clockSpeed;
+    private final int cache;
+    private final int power;
 
-    public HardwareComponent(String s, String name, double clockSpeed, int cache, int power) {
+    public HardwareComponent(String name, double clockSpeed, int cache, int power) {
         this.name = name;
         this.clockSpeed = clockSpeed;
         this.cache = cache;

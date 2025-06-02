@@ -63,7 +63,7 @@ public class CLI {
                     System.out.print("Power (Watt): ");
                     int power = Integer.parseInt(sc.nextLine());
 
-                    HardwareComponent newComponent = new HardwareComponent(name, type, clock, cache, power) {
+                    HardwareComponent newComponent = new HardwareComponent(type, clock, cache, power) {
                         @Override
                         public String getType() {
                             return "";

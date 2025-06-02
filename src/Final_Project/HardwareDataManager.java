@@ -34,17 +34,7 @@ public class HardwareDataManager {
                 String line = scanner.nextLine();
                 String[] parts = line.split(",");
                 if (parts.length == 5 && !line.contains("null")) {
-                    String name = parts[0];
-                    String type = parts[1];
-                    double clock = Double.parseDouble(parts[2]);
-                    int cache = Integer.parseInt(parts[3]);
-                    int power = Integer.parseInt(parts[4]);
-                    HardwareComponent hc = null;
-                    if (type.equalsIgnoreCase("CPU")) {
-                        hc = new CPU(name, clock, cache, power);
-                    } else if (type.equalsIgnoreCase("GPU")) {
-                        hc = new GPU(name, clock, cache, power);
-                    }
+                    HardwareComponent hc = getHardwareComponent(parts);
                     if (hc != null) {
                         components.add(hc);
                     }
@@ -53,6 +43,21 @@ public class HardwareDataManager {
         } catch (IOException e) {
             System.out.println("Error reading file: " + e.getMessage());
         }
+    }
+
+    private static HardwareComponent getHardwareComponent(String[] parts) {
+        String name = parts[0];
+        String type = parts[1];
+        double clock = Double.parseDouble(parts[2]);
+        int cache = Integer.parseInt(parts[3]);
+        int power = Integer.parseInt(parts[4]);
+        HardwareComponent hc = null;
+        if (type.equalsIgnoreCase("CPU")) {
+            hc = new CPU(name, clock, cache, power);
+        } else if (type.equalsIgnoreCase("GPU")) {
+            hc = new GPU(name, clock, cache, power);
+        }
+        return hc;
     }
 
     //writer
@@ -71,24 +76,24 @@ public class HardwareDataManager {
 
     //selection sorting algorithm
     public void sortByPerformanceDescending() {
-    for (int i = 0; i < components.size() - 1; i++) {
-        int maxIdx = i;
-        double maxScore = components.get(i).getClockSpeed() * components.get(i).getCache();
-        for (int j = i + 1; j < components.size(); j++) {
-            double scoreJ = components.get(j).getClockSpeed() * components.get(j).getCache();
-            if (scoreJ > maxScore) {
-                maxScore = scoreJ;
-                maxIdx = j;
+        for (int i = 0; i < components.size() - 1; i++) {
+            int maxIdx = i;
+            double maxScore = components.get(i).getClockSpeed() * components.get(i).getCache();
+            for (int j = i + 1; j < components.size(); j++) {
+                double scoreJ = components.get(j).getClockSpeed() * components.get(j).getCache();
+                if (scoreJ > maxScore) {
+                    maxScore = scoreJ;
+                    maxIdx = j;
+                }
+            }
+
+            if (maxIdx != i) {
+                HardwareComponent temp = components.get(i);
+                components.set(i, components.get(maxIdx));
+                components.set(maxIdx, temp);
             }
         }
-
-        if (maxIdx != i) {
-            HardwareComponent temp = components.get(i);
-            components.set(i, components.get(maxIdx));
-            components.set(maxIdx, temp);
-        }
     }
-}
 
 
     public void addComponent(HardwareComponent hc) {
