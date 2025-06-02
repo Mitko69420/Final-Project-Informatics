@@ -39,8 +39,15 @@ public class HardwareDataManager {
                     double clock = Double.parseDouble(parts[2]);
                     int cache = Integer.parseInt(parts[3]);
                     int power = Integer.parseInt(parts[4]);
-                    HardwareComponent hc = new HardwareComponent(name, type, clock, cache, power);
-                    components.add(hc);
+                    HardwareComponent hc = null;
+                    if (type.equalsIgnoreCase("CPU")) {
+                        hc = new CPU(name, clock, cache, power);
+                    } else if (type.equalsIgnoreCase("GPU")) {
+                        hc = new GPU(name, clock, cache, power);
+                    }
+                    if (hc != null) {
+                        components.add(hc);
+                    }
                 }
             }
         } catch (IOException e) {
@@ -60,6 +67,29 @@ public class HardwareDataManager {
             System.out.println("Error writing to file: " + e.getMessage());
         }
     }
+
+
+    //selection sorting algorithm
+    public void sortByPerformanceDescending() {
+    for (int i = 0; i < components.size() - 1; i++) {
+        int maxIdx = i;
+        double maxScore = components.get(i).getClockSpeed() * components.get(i).getCache();
+        for (int j = i + 1; j < components.size(); j++) {
+            double scoreJ = components.get(j).getClockSpeed() * components.get(j).getCache();
+            if (scoreJ > maxScore) {
+                maxScore = scoreJ;
+                maxIdx = j;
+            }
+        }
+
+        if (maxIdx != i) {
+            HardwareComponent temp = components.get(i);
+            components.set(i, components.get(maxIdx));
+            components.set(maxIdx, temp);
+        }
+    }
+}
+
 
     public void addComponent(HardwareComponent hc) {
         if (hc != null) {
