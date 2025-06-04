@@ -9,12 +9,12 @@ public class CLI {
         manager.loadFromFile("hardware.bin");
 
         while (true) {
-            System.out.println("\n--- Hardware Comparator ---");
+            System.out.println("\n    Hardware Comparator    ");
             System.out.println("1. View All Components");
-            System.out.println("2. Compare Two Components");
+            System.out.println("2. Compare Components");
             System.out.println("3. Suggest Upgrade");
-            System.out.println("4. Add New Component");
-            System.out.println("5. Save and Exit");
+            System.out.println("4. Add Component");
+            System.out.println("5. Exit");
             System.out.println("6. Sort Components by Performance");
             System.out.print("Choose an option: ");
             String input = sc.nextLine();
@@ -59,8 +59,9 @@ public class CLI {
                     String name = sc.nextLine();
                     System.out.print("Type (CPU/GPU): ");
                     String type = sc.nextLine();
-                    double clock = 0;
-                    int cache = 0, power = 0;
+                    double clock;
+                    int cache;
+                    int power;
 
                     //handle errors
                     try {
