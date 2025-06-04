@@ -1,49 +1,11 @@
 package Final_Project;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 public class HardwareDataManager {
     private final List<HardwareComponent> components = new ArrayList<>();
-
-    public void loadFromFile(String filename) {
-        File file = new File(filename);
-
-        //predvaritelni danni
-        if (!file.exists()) {
-            try (FileWriter writer = new FileWriter(file)) {
-                writer.write("Ryzen 5 5600X,CPU,3.7,32,65\n");
-                writer.write("Intel i5-12400F,CPU,2.5,20,65\n");
-                writer.write("Intel i7-13700K,CPU,3.4,30,125\n");
-                writer.write("RTX 3060,GPU,1.8,12,170\n");
-                writer.write("RX 6700 XT,GPU,2.4,16,230\n");
-                writer.write("RX 7600,GPU,2.6,8,165\n");
-                System.out.println("File not found. 'hardware.txt' was created with default components.");
-            } catch (IOException e) {
-                System.out.println("Failed to create hardware.txt: " + e.getMessage());
-            }
-        }
-        //Reader
-        try (Scanner scanner = new Scanner(file)) {
-            components.clear();
-            while (scanner.hasNextLine()) {
-                String line = scanner.nextLine();
-                String[] parts = line.split(",");
-                if (parts.length == 5 && !line.contains("null")) {
-                    HardwareComponent hc = getHardwareComponent(parts);
-                    if (hc != null) {
-                        components.add(hc);
-                    }
-                }
-            }
-        } catch (IOException e) {
-            System.out.println("Error reading file: " + e.getMessage());
-        }
-    }
 
     private static HardwareComponent getHardwareComponent(String[] parts) {
         String name = parts[0];
@@ -60,16 +22,59 @@ public class HardwareDataManager {
         return hc;
     }
 
+    public void loadFromFile(String filename) {
+
+
+        File file = new File(filename);
+        if (!file.exists()) {
+            System.out.println("Binary file not found. Creating default components...");
+
+            components.clear();
+            components.add(new CPU("Ryzen 5 5600X", 3.7, 32, 65));
+            components.add(new CPU("Intel i5-12400F", 2.5, 20, 65));
+            components.add(new CPU("Intel i7-13700K", 3.4, 30, 125));
+            components.add(new GPU("RTX 3060", 1.8, 12, 170));
+            components.add(new GPU("RX 6700 XT", 2.4, 16, 230));
+            components.add(new GPU("RX 7600", 2.6, 8, 165));
+
+            saveToFile(filename);
+            return;
+        }
+
+        try {
+            ObjectInputStream in = new ObjectInputStream(new FileInputStream(file));
+            Object obj = in.readObject();
+            in.close();
+
+            if (obj instanceof java.util.List) {
+                components.clear();
+                for (Object o : (java.util.List<?>) obj) {
+                    if (o instanceof HardwareComponent) {
+                        components.add((HardwareComponent) o);
+                    }
+                }
+                System.out.println("Loaded from binary file: " + filename);
+            } else {
+                System.out.println("Binary file is not valid.");
+            }
+
+        } catch (IOException e) {
+            System.out.println("IO error: " + e.getMessage());
+        } catch (ClassNotFoundException e) {
+            System.out.println("Class not found: " + e.getMessage());
+        }
+
+    }
+
     //writer
     public void saveToFile(String filename) {
-        try (FileWriter writer = new FileWriter(filename)) {
-            for (HardwareComponent hc : components) {
-                writer.write(hc.getName() + "," + hc.getType() + "," +
-                        hc.getClockSpeed() + "," + hc.getCache() + "," +
-                        hc.getPower() + "\n");
-            }
+        try {
+            ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(filename));
+            out.writeObject(components);
+            out.close();
+            System.out.println("Saved: " + filename);
         } catch (IOException e) {
-            System.out.println("Error writing to file: " + e.getMessage());
+            System.out.println("Error writing: " + e.getMessage());
         }
     }
 
@@ -103,7 +108,7 @@ public class HardwareDataManager {
                 return;
             }
         }
-    components.add(hc);
+        components.add(hc);
 
     }
 

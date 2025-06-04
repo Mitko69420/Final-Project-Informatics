@@ -6,7 +6,7 @@ public class CLI {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         HardwareDataManager manager = new HardwareDataManager();
-        manager.loadFromFile("hardware.txt");
+        manager.loadFromFile("hardware.bin");
 
         while (true) {
             System.out.println("\n--- Hardware Comparator ---");
@@ -24,7 +24,7 @@ public class CLI {
             try {
                 option = Integer.parseInt(input);
             } catch (NumberFormatException e) {
-                System.out.println("Invalid input. ");
+                System.out.println("Invalid input");
             }
             switch (option) {
                 case 1: {
@@ -35,21 +35,21 @@ public class CLI {
                 }
 
                 case 2: {
-                    System.out.print("Enter name of first component: ");
+                    System.out.print("Enter first component: ");
                     HardwareComponent h1 = manager.findByName(sc.nextLine());
-                    System.out.print("Enter name of second component: ");
+                    System.out.print("Enter second component: ");
                     HardwareComponent h2 = manager.findByName(sc.nextLine());
                     System.out.println(HardwareAnalyzer.compare(h1, h2));
                     if (h1 == null || h2 == null) {
-                        System.out.println("One or both components not found.");
+                        System.out.println("Component(s) not found");
                     }
                     break;
                 }
 
                 case 3: {
-                    System.out.print("Enter CPU name: ");
+                    System.out.print("Enter CPU: ");
                     HardwareComponent cpu = manager.findByName(sc.nextLine());
-                    System.out.print("Enter GPU name: ");
+                    System.out.print("Enter GPU: ");
                     HardwareComponent gpu = manager.findByName(sc.nextLine());
                     System.out.println(HardwareAnalyzer.suggestUpgrade(cpu, gpu));
                     break;
@@ -71,7 +71,7 @@ public class CLI {
                         System.out.print("Power (Watt): ");
                         power = Integer.parseInt(sc.nextLine());
                     } catch (NumberFormatException e) {
-                        System.out.println("Invalid number input");
+                        System.out.println("Invalid input");
                         break;
                     }
 
@@ -83,19 +83,19 @@ public class CLI {
                         }
                     };
                     manager.addComponent(newComponent);
-                    System.out.println("Component added.");
+                    System.out.println("Added");
                     break;
                 }
 
                 case 5: {
-                    manager.saveToFile("hardware.txt");
-                    System.out.println("Exiting...");
+                    manager.saveToFile("hardware.bin");
+                    System.out.println("Exiting");
                     sc.close();
                     return;
                 }
                 case 6: {
                     manager.sortByPerformanceDescending();
-                    System.out.println("Components sorted by performance:");
+                    System.out.println("Sorted by performance:");
                     for (HardwareComponent hc : manager.getComponents()) {
                         System.out.println(hc);
                     }

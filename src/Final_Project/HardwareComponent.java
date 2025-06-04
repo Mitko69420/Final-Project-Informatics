@@ -1,6 +1,8 @@
 package Final_Project;
 
-public abstract class HardwareComponent {
+import java.io.*    ;
+
+public abstract class HardwareComponent implements Serializable {
     private final String name;
     private final double clockSpeed;
     private final int cache;
