@@ -27,8 +27,8 @@ public class HardwareDataManager {
 
         File file = new File(filename);
         if (!file.exists()) {
-            System.out.println("Binary file not found. Creating default components...");
-
+            System.out.println("File not found");
+            //predvaritelni stoinosti
             components.clear();
             components.add(new CPU("Ryzen 5 5600X", 3.7, 32, 65));
             components.add(new CPU("Intel i5-12400F", 2.5, 20, 65));
@@ -104,7 +104,7 @@ public class HardwareDataManager {
     public void addComponent(HardwareComponent hc) {
         for (HardwareComponent c : components) {
             if (c.getName().equalsIgnoreCase(hc.getName())) {
-                System.out.println("Component with this name already exists.");
+                System.out.println("Component already exists.");
                 return;
             }
         }

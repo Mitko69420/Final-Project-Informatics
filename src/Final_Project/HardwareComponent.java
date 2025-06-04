@@ -4,9 +4,9 @@ import java.io.Serializable;
 
 public abstract class HardwareComponent implements Serializable {
     private final String name;
-    private final double clockSpeed;
-    private final int cache;
-    private final int power;
+    private double clockSpeed;
+    private int cache;
+    private int power;
 
     public HardwareComponent(String name, double clockSpeed, int cache, int power) {
         this.name = name;
@@ -25,13 +25,26 @@ public abstract class HardwareComponent implements Serializable {
         return clockSpeed;
     }
 
+    public void setClockSpeed(double clockSpeed) {
+        this.clockSpeed = clockSpeed;
+    }
+
     public int getCache() {
         return cache;
+    }
+
+    public void setCache(int cache) {
+        this.cache = cache;
     }
 
     public int getPower() {
         return power;
     }
+
+    public void setPower(int power) {
+        this.power = power;
+    }
+
 
     @Override
     public String toString() {
