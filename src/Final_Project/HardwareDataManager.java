@@ -7,21 +7,6 @@ import java.util.List;
 public class HardwareDataManager {
     private final List<HardwareComponent> components = new ArrayList<>();
 
-    private static HardwareComponent getHardwareComponent(String[] parts) {
-        String name = parts[0];
-        String type = parts[1];
-        double clock = Double.parseDouble(parts[2]);
-        int cache = Integer.parseInt(parts[3]);
-        int power = Integer.parseInt(parts[4]);
-        HardwareComponent hc = null;
-        if (type.equalsIgnoreCase("CPU")) {
-            hc = new CPU(name, clock, cache, power);
-        } else if (type.equalsIgnoreCase("GPU")) {
-            hc = new GPU(name, clock, cache, power);
-        }
-        return hc;
-    }
-
     public void loadFromFile(String filename) {
 
 
