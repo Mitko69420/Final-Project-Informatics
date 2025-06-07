@@ -1,11 +1,8 @@
 package Presentation;
 
-import Business.CPU;
-import Business.GPU;
-import Business.HardwareComponent;
-import Business.HardwareService;
-
+import Business.*;
 import javax.swing.*;
+import java.util.List;
 import java.util.Scanner;
 
 public class CLI {
@@ -40,6 +37,7 @@ public class CLI {
             System.out.println("6. Sort Components by Performance");
             System.out.println("7. Edit");
             System.out.println("8. Delete");
+            System.out.println("9. Search by Cache or Power");
             System.out.print("Choose an option: ");
             String input = sc.nextLine();
 
@@ -223,6 +221,39 @@ public class CLI {
                     break;
                 }
 
+                case 9: {
+                    System.out.println("Search by: 1) Cache  2) Power");
+                    String choice = sc.nextLine();
+
+                    if (choice.equals("1")) {
+                        System.out.print("Enter cache size (MB): ");
+                        int cache = Integer.parseInt(sc.nextLine());
+                        List<HardwareComponent> found = service.findByCache(cache);
+                        if (found.isEmpty()) {
+                            System.out.println("No components found with cache = " + cache);
+                        } else {
+                            for (HardwareComponent hc : found) {
+                                System.out.println(hc);
+                            }
+                        }
+                    } else if (choice.equals("2")) {
+                        System.out.print("Enter power consumption (W): ");
+                        int power = Integer.parseInt(sc.nextLine());
+                        List<HardwareComponent> found = service.findByPower(power);
+                        if (found.isEmpty()) {
+                            System.out.println("No components found with power = " + power);
+                        } else {
+                            for (HardwareComponent hc : found) {
+                                System.out.println(hc);
+                            }
+                        }
+                    } else {
+                        System.out.println("Invalid choice.");
+                    }
+                    break;
+                }
+
+
                 default: {
                     if (option != -1) {
                         System.out.println("Invalid option");
@@ -232,4 +263,3 @@ public class CLI {
         }
     }
 }
-

@@ -127,56 +127,52 @@ public class HardwareService {
         }
     }
 
-   public void loadData(String filename) {
-    List<HardwareComponent> loaded = BinaryStorage.loadFromFile(filename);
-    if (loaded.isEmpty()) {
-        System.out.println("No saved data—loading default components.");
-        components.clear();
-        components.addAll(getDefaultComponents());
-        BinaryStorage.saveToFile(filename, components);
-    } else {
-        components.clear();
-        components.addAll(loaded);
+    public void loadData(String filename) {
+        List<HardwareComponent> loaded = BinaryStorage.loadFromFile(filename);
+        if (loaded.isEmpty()) {
+            System.out.println("No saved data—loading default components.");
+            components.clear();
+            components.addAll(getDefaultComponents());
+            BinaryStorage.saveToFile(filename, components);
+        } else {
+            components.clear();
+            components.addAll(loaded);
+        }
     }
-}
 
-private List<HardwareComponent> getDefaultComponents() {
-    List<HardwareComponent> defaults = new ArrayList<>();
-    defaults.add(new CPU("Ryzen 5 5600X", 3.7, 32, 65));
-    defaults.add(new CPU("Intel i5-12400F", 2.5, 20, 65));
-    defaults.add(new CPU("Intel i7-13700K", 3.4, 30, 125));
-    defaults.add(new GPU("RTX 3060", 1.8, 12, 170));
-    defaults.add(new GPU("RX 6700 XT", 2.4, 16, 230));
-    defaults.add(new GPU("RX 7600", 2.6, 8, 165));
-    return defaults;
-}
+    private List<HardwareComponent> getDefaultComponents() {
+        List<HardwareComponent> defaults = new ArrayList<>();
+        defaults.add(new CPU("Ryzen 5 5600X", 3.7, 32, 65));
+        defaults.add(new CPU("Intel i5-12400F", 2.5, 20, 65));
+        defaults.add(new CPU("Intel i7-13700K", 3.4, 30, 125));
+        defaults.add(new GPU("RTX 3060", 1.8, 12, 170));
+        defaults.add(new GPU("RX 6700 XT", 2.4, 16, 230));
+        defaults.add(new GPU("RX 7600", 2.6, 8, 165));
+        return defaults;
+    }
 
 
     public void saveData(String filename) {
         BinaryStorage.saveToFile(filename, components);
     }
 
-public List<HardwareComponent> findByCache(int cacheSize) {
-    List<HardwareComponent> result = new ArrayList<>();
-    for (HardwareComponent c : components) {
-        if (c.getCache() == cacheSize) {
-            result.add(c);
+    public List<HardwareComponent> findByCache(int cacheSize) {
+        List<HardwareComponent> result = new ArrayList<>();
+        for (HardwareComponent c : components) {
+            if (c.getCache() == cacheSize) {
+                result.add(c);
+            }
         }
+        return result;
     }
-    return result;
-}
 
-public List<HardwareComponent> findByPower(int powerWatt) {
-    List<HardwareComponent> result = new ArrayList<>();
-    for (HardwareComponent c : components) {
-        if (c.getPower() == powerWatt) {
-            result.add(c);
+    public List<HardwareComponent> findByPower(int powerWatt) {
+        List<HardwareComponent> result = new ArrayList<>();
+        for (HardwareComponent c : components) {
+            if (c.getPower() == powerWatt) {
+                result.add(c);
+            }
         }
+        return result;
     }
-    return result;
-}
-
-
-
-
 }

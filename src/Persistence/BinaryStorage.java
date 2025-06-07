@@ -1,7 +1,6 @@
 package Persistence;
 
 import Business.HardwareComponent;
-
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -39,7 +38,6 @@ public class BinaryStorage {
         } catch (IOException | ClassNotFoundException e) {
             System.out.println("Error loading file: " + e.getMessage());
         }
-
         return new ArrayList<>();
     }
 }

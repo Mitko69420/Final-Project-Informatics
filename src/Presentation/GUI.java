@@ -4,7 +4,7 @@ import Business.CPU;
 import Business.GPU;
 import Business.HardwareComponent;
 import Business.HardwareService;
-
+import java.util.List;
 import javax.swing.*;
 import java.awt.*;
 
@@ -38,6 +38,7 @@ public class GUI extends JFrame {
         addButton(panel, "Suggest Upgrade", e -> suggestUpgrade());
         addButton(panel, "Edit Component", e -> editComponent());
         addButton(panel, "Delete Component", e -> deleteComponent());
+        addButton(panel, "Search by Cache/Power", e -> searchByAttribute());
         addButton(panel, "Exit", e -> System.exit(0));
 
         add(panel, BorderLayout.NORTH);
@@ -50,6 +51,7 @@ public class GUI extends JFrame {
         button.addActionListener(action);
         panel.add(button);
     }
+
 
     private void viewAll() {
         displayArea.setText("");
@@ -208,4 +210,47 @@ public class GUI extends JFrame {
             JOptionPane.showMessageDialog(this, "Component deleted.");
         }
     }
+
+    private void searchByAttribute() {
+    String[] options = {"Cache", "Power"};
+    String choice = (String) JOptionPane.showInputDialog(
+        this,
+        "Search by:",
+        "Search",
+        JOptionPane.QUESTION_MESSAGE,
+        null,
+        options,
+        options[0]
+    );
+    if (choice == null) return;
+
+    String prompt = choice.equals("Cache") ? "Enter cache size (MB):" : "Enter power (W):";
+    String input = JOptionPane.showInputDialog(this, prompt);
+    if (input == null) return;
+
+    int value;
+    try {
+        value = Integer.parseInt(input);
+    } catch (NumberFormatException ex) {
+        JOptionPane.showMessageDialog(this, "Invalid number.");
+        return;
+    }
+
+    List<HardwareComponent> results;
+    if (choice.equals("Cache")) {
+        results = service.findByCache(value);
+    } else {
+        results = service.findByPower(value);
+    }
+
+    displayArea.setText("");
+    if (results.isEmpty()) {
+        displayArea.append("No components found for " + choice + " = " + value);
+    } else {
+        for (HardwareComponent hc : results) {
+            displayArea.append(hc + "\n");
+        }
+    }
+}
+
 }
