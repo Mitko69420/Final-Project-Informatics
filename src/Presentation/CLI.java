@@ -1,9 +1,15 @@
-package Final_Project;
+package Presentation;
+
+import Business.CPU;
+import Business.GPU;
+import Business.HardwareComponent;
+import Business.HardwareService;
 
 import javax.swing.*;
 import java.util.Scanner;
 
 public class CLI {
+
     public static void main(String[] args) {
 
         System.out.println("Choose mode: 1. GUI  2. CLI");
@@ -21,8 +27,8 @@ public class CLI {
 
     public static void run() {
         Scanner sc = new Scanner(System.in);
-        HardwareDataManager manager = new HardwareDataManager();
-        manager.loadFromFile("hardware.bin");
+        HardwareService service = new HardwareService();
+        service.loadData("hardware.bin");
 
         while (true) {
             System.out.println("\n  Hardware Comparator    ");
@@ -47,7 +53,7 @@ public class CLI {
 
             switch (option) {
                 case 1: {
-                    for (HardwareComponent hc : manager.getComponents()) {
+                    for (HardwareComponent hc : service.getAllComponents()) {
                         System.out.println(hc);
                     }
                     break;
@@ -55,19 +61,19 @@ public class CLI {
 
                 case 2: {
                     System.out.print("Enter first component: ");
-                    HardwareComponent h1 = manager.findByName(sc.nextLine());
+                    HardwareComponent h1 = service.findByName(sc.nextLine());
                     System.out.print("Enter second component: ");
-                    HardwareComponent h2 = manager.findByName(sc.nextLine());
-                    System.out.println(HardwareAnalyzer.compare(h1, h2));
+                    HardwareComponent h2 = service.findByName(sc.nextLine());
+                    System.out.println(service.compare(h1, h2));
                     break;
                 }
 
                 case 3: {
                     System.out.print("Enter CPU: ");
-                    HardwareComponent cpu = manager.findByName(sc.nextLine());
+                    HardwareComponent cpu = service.findByName(sc.nextLine());
                     System.out.print("Enter GPU: ");
-                    HardwareComponent gpu = manager.findByName(sc.nextLine());
-                    System.out.println(HardwareAnalyzer.suggestUpgrade(cpu, gpu));
+                    HardwareComponent gpu = service.findByName(sc.nextLine());
+                    System.out.println(service.suggestUpgrade(cpu, gpu));
                     break;
                 }
 
@@ -77,18 +83,39 @@ public class CLI {
                     System.out.print("Type (CPU/GPU): ");
                     String type = sc.nextLine();
                     double clock;
-                    int cache;
-                    int power;
 
-                    //errors
-                    try {
-                        clock = InputValidator.getDoubleInput(sc, "Clock Speed (GHz): ");
-                        cache = InputValidator.getIntInput(sc, "Cache (MB): ");
-                        power = InputValidator.getIntInput(sc, "Power (Watt): ");
-                    } catch (NumberFormatException e) {
-                        System.out.println("Invalid input");
-                        break;
+                    while (true) {
+                        System.out.print("Clock Speed (GHz): ");
+                        try {
+                            clock = Double.parseDouble(sc.nextLine());
+                            break;
+                        } catch (NumberFormatException e) {
+                            System.out.println("Invalid number. Try again.");
+                        }
                     }
+
+                    int cache;
+                    while (true) {
+                        System.out.print("Cache (MB): ");
+                        try {
+                            cache = Integer.parseInt(sc.nextLine());
+                            break;
+                        } catch (NumberFormatException e) {
+                            System.out.println("Invalid number. Try again.");
+                        }
+                    }
+
+                    int power;
+                    while (true) {
+                        System.out.print("Power (W): ");
+                        try {
+                            power = Integer.parseInt(sc.nextLine());
+                            break;
+                        } catch (NumberFormatException e) {
+                            System.out.println("Invalid number. Try again.");
+                        }
+                    }
+
 
                     HardwareComponent newComponent;
                     if (type.equalsIgnoreCase("CPU")) {
@@ -101,23 +128,23 @@ public class CLI {
                     }
 
 
-                    manager.addComponent(newComponent);
+                    service.addComponent(newComponent);
                     System.out.println("Added");
-                    manager.saveToFile("hardware.bin");
+                    service.saveData("hardware.bin");
                     break;
                 }
 
                 case 5: {
-                    manager.saveToFile("hardware.bin");
+                    service.saveData("hardware.bin");
                     System.out.println("Exiting");
                     sc.close();
                     return;
                 }
 
                 case 6: {
-                    manager.sortByPerformanceDescending();
+                    service.sortByPerformanceDescending();
                     System.out.println("Sorted by performance:");
-                    for (HardwareComponent hc : manager.getComponents()) {
+                    for (HardwareComponent hc : service.getAllComponents()) {
                         System.out.println(hc);
                     }
                     break;
@@ -126,29 +153,59 @@ public class CLI {
                 case 7: {
                     System.out.print("Enter name of component to edit: ");
                     String nameToEdit = sc.nextLine();
-                    HardwareComponent comp = manager.findByName(nameToEdit);
+                    HardwareComponent comp = service.findByName(nameToEdit);
                     if (comp == null) {
                         System.out.println("Component not found.");
                         break;
                     }
 
-                    double newClock = InputValidator.getDoubleInput(sc, "New Clock Speed (GHz): ");
-                    int newCache = InputValidator.getIntInput(sc, "New Cache (MB): ");
-                    int newPower = InputValidator.getIntInput(sc, "New Power (W): ");
+                    double newClock;
+                    while (true) {
+                        System.out.print("New Clock Speed (GHz): ");
+                        try {
+                            newClock = Double.parseDouble(sc.nextLine());
+                            break;
+                        } catch (NumberFormatException e) {
+                            System.out.println("Invalid number. Try again.");
+                        }
+                    }
+
+                    int newCache;
+                    while (true) {
+                        System.out.print("New Cache (MB): ");
+                        try {
+                            newCache = Integer.parseInt(sc.nextLine());
+                            break;
+                        } catch (NumberFormatException e) {
+                            System.out.println("Invalid number. Try again.");
+                        }
+                    }
+
+                    int newPower;
+                    while (true) {
+                        System.out.print("New Power (W): ");
+                        try {
+                            newPower = Integer.parseInt(sc.nextLine());
+                            break;
+                        } catch (NumberFormatException e) {
+                            System.out.println("Invalid number. Try again.");
+                        }
+                    }
+
 
                     comp.setClockSpeed(newClock);
                     comp.setCache(newCache);
                     comp.setPower(newPower);
 
                     System.out.println("Updated");
-                    manager.saveToFile("hardware.bin");
+                    service.saveData("hardware.bin");
                     break;
                 }
 
                 case 8: {
                     System.out.print("Enter name of component to delete: ");
                     String name = sc.nextLine();
-                    HardwareComponent toRemove = manager.findByName(name);
+                    HardwareComponent toRemove = service.findByName(name);
 
                     if (toRemove == null) {
                         System.out.println("Component not found");
@@ -159,9 +216,9 @@ public class CLI {
                     String confirm = sc.nextLine();
 
                     if (confirm.equalsIgnoreCase("yes")) {
-                        manager.getComponents().remove(toRemove);
+                        service.getAllComponents().remove(toRemove);
                         System.out.println("Deleted");
-                        manager.saveToFile("hardware.bin");
+                        service.saveData("hardware.bin");
                     }
                     break;
                 }
