@@ -11,22 +11,22 @@ public class HardwareService {
     private final List<HardwareComponent> components = new ArrayList<>();
 
     //selection sorting algorithm
-    public void sortByPerformanceDescending() {
+    public void sortByPerformanceAscending() {
         for (int i = 0; i < components.size() - 1; i++) {
-            int maxIdx = i;
-            double maxScore = components.get(i).getClockSpeed() * components.get(i).getCache();
+            int minIndex = i;
+            double minScore = components.get(i).getClockSpeed() * components.get(i).getCache();
             for (int j = i + 1; j < components.size(); j++) {
                 double scoreJ = components.get(j).getClockSpeed() * components.get(j).getCache();
-                if (scoreJ > maxScore) {
-                    maxScore = scoreJ;
-                    maxIdx = j;
+                if (scoreJ < minScore) {
+                    minScore = scoreJ;
+                    minIndex = j;
                 }
             }
 
-            if (maxIdx != i) {
+            if (minIndex != i) {
                 HardwareComponent temp = components.get(i);
-                components.set(i, components.get(maxIdx));
-                components.set(maxIdx, temp);
+                components.set(i, components.get(minIndex));
+                components.set(minIndex, temp);
             }
         }
         txtFile();

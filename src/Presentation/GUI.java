@@ -141,7 +141,7 @@ public class GUI extends JFrame {
 
     //Sort Components
     private void sortComponents() {
-        service.sortByPerformanceDescending();
+        service.sortByPerformanceAscending();
         viewAll();
     }
 

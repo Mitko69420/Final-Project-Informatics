@@ -133,7 +133,7 @@ public class CLI {
                 }
                 //Sort by Performance
                 case 6: {
-                    service.sortByPerformanceDescending();
+                    service.sortByPerformanceAscending();
                     System.out.println("Sorted by performance:");
 
                     for (HardwareComponent hc : service.getAllComponents()) {
