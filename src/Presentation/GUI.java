@@ -56,21 +56,21 @@ public class GUI extends JFrame {
 
         setVisible(true);
     }
-
+    //Add Buttons
     private void addButton(JPanel panel, String title, java.awt.event.ActionListener action) {
         JButton button = new JButton(title);
         button.addActionListener(action);
         panel.add(button);
     }
 
-
+    //View All Components
     private void viewAll() {
         displayArea.setText("");
         for (HardwareComponent hc : service.getAllComponents()) {
             displayArea.append(hc.toString() + "\n");
         }
     }
-
+    //Add a Component
     private void addComponent() {
         String name = JOptionPane.showInputDialog(this, "Component Name:");
         if (name == null || name.isBlank()) return;
@@ -123,12 +123,12 @@ public class GUI extends JFrame {
         service.saveData("hardware.bin");
         JOptionPane.showMessageDialog(this, "Component added.");
     }
-
+    //Sort Components
     private void sortComponents() {
         service.sortByPerformanceDescending();
         viewAll();
     }
-
+    //Compare Components
     private void compareComponents() {
         String name1 = JOptionPane.showInputDialog(this, "First component name:");
         String name2 = JOptionPane.showInputDialog(this, "Second component name:");
@@ -143,7 +143,7 @@ public class GUI extends JFrame {
 
         displayArea.setText(service.compare(c1, c2));
     }
-
+    //Suggest an Upgrade
     private void suggestUpgrade() {
         String cpuName = JOptionPane.showInputDialog(this, "Enter CPU name:");
         String gpuName = JOptionPane.showInputDialog(this, "Enter GPU name:");
@@ -158,7 +158,7 @@ public class GUI extends JFrame {
 
         displayArea.setText(service.suggestUpgrade(cpu, gpu));
     }
-
+    //Edit a Component
     private void editComponent() {
         String name = JOptionPane.showInputDialog(this, "Enter name of component to edit:");
         HardwareComponent comp = service.findByName(name);
@@ -207,6 +207,7 @@ public class GUI extends JFrame {
         JOptionPane.showMessageDialog(this, "Component updated.");
     }
 
+    //Delete a Component
     private void deleteComponent() {
         String name = JOptionPane.showInputDialog(this, "Enter name of component to delete:");
         HardwareComponent comp = service.findByName(name);

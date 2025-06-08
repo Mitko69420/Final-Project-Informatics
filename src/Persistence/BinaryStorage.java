@@ -7,6 +7,7 @@ import java.util.List;
 
 public class BinaryStorage {
 
+    //Save to bin file
     public static void saveToFile(String filename, List<HardwareComponent> components) {
         try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(filename))) {
             out.writeObject(components);
@@ -15,7 +16,7 @@ public class BinaryStorage {
             System.out.println("Error writing: " + e.getMessage());
         }
     }
-
+    //Load from bin file
     public static List<HardwareComponent> loadFromFile(String filename) {
         File file = new File(filename);
         if (!file.exists()) {

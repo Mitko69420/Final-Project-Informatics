@@ -133,7 +133,7 @@ public class HardwareService {
             return "Your system is balanced.";
         }
     }
-    //Load File Components
+    //Load File Components From File
     public void loadData(String filename) {
         List<HardwareComponent> loaded = BinaryStorage.loadFromFile(filename);
         if (loaded.isEmpty()) {
