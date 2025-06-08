@@ -55,6 +55,7 @@ public class HardwareService {
         return null;
     }
 
+    //reference to list
     public List<HardwareComponent> getAllComponents() {
         return components;
     }
