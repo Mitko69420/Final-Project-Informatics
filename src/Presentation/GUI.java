@@ -18,7 +18,7 @@ public class GUI extends JFrame {
         service.loadData("hardware.bin");
 
         setTitle("Hardware Comparator");
-        setSize(700, 500);
+        setSize(1200, 700);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
 
@@ -37,10 +37,20 @@ public class GUI extends JFrame {
 
         // Buttons
         JPanel panel = new JPanel();
+panel.setLayout(new GridLayout(4, 2, 10, 10));
+panel.setBackground(Color.LIGHT_GRAY);
+panel.setOpaque(true); // <--- Add this line
+
+
+
         panel.setLayout(new GridLayout(4, 2, 10, 10));
 
         //All Buttons
-        addButton(panel, "View All", e -> viewAll());
+ JButton viewAllButton = new JButton("View All");
+        viewAllButton.setBackground(Color.RED);
+        viewAllButton.setForeground(Color.WHITE);
+        viewAllButton.addActionListener(e -> viewAll());
+        panel.add(viewAllButton);
         addButton(panel, "Add Component", e -> addComponent());
         addButton(panel, "Sort by Performance", e -> sortComponents());
         addButton(panel, "Compare Components", e -> compareComponents());
