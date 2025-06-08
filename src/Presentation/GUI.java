@@ -22,12 +22,9 @@ public class GUI extends JFrame {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
 
-        //Scale the image
-        ImageIcon rawIcon = new ImageIcon(getClass().getResource("/Presentation/hardware.jpg"));
-        Image scaledImage = rawIcon.getImage().getScaledInstance(340, 150, Image.SCALE_SMOOTH);
-        ImageIcon scaledIcon = new ImageIcon(scaledImage);
-        JLabel imageLabel = new JLabel(scaledIcon);
-
+        //GIF
+        ImageIcon gifIcon = new ImageIcon(getClass().getResource("/Presentation/GIF.gif"));
+        JLabel imageLabel = new JLabel(gifIcon);
         JPanel imagePanel = new JPanel();
         imagePanel.add(imageLabel);
 
@@ -42,6 +39,7 @@ public class GUI extends JFrame {
         JPanel panel = new JPanel();
         panel.setLayout(new GridLayout(4, 2, 10, 10));
 
+        //All Buttons
         addButton(panel, "View All", e -> viewAll());
         addButton(panel, "Add Component", e -> addComponent());
         addButton(panel, "Sort by Performance", e -> sortComponents());
@@ -56,6 +54,11 @@ public class GUI extends JFrame {
 
         setVisible(true);
     }
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(GUI::new);
+    }
+
     //Add Buttons
     private void addButton(JPanel panel, String title, java.awt.event.ActionListener action) {
         JButton button = new JButton(title);
@@ -70,6 +73,7 @@ public class GUI extends JFrame {
             displayArea.append(hc.toString() + "\n");
         }
     }
+
     //Add a Component
     private void addComponent() {
         String name = JOptionPane.showInputDialog(this, "Component Name:");
@@ -82,6 +86,7 @@ public class GUI extends JFrame {
         }
 
         double clock;
+
         while (true) {
             try {
                 clock = Double.parseDouble(JOptionPane.showInputDialog(this, "Clock Speed (GHz):"));
@@ -92,6 +97,7 @@ public class GUI extends JFrame {
         }
 
         int cache;
+
         while (true) {
             try {
                 cache = Integer.parseInt(JOptionPane.showInputDialog(this, "Cache (MB):"));
@@ -102,6 +108,7 @@ public class GUI extends JFrame {
         }
 
         int power;
+
         while (true) {
             try {
                 power = Integer.parseInt(JOptionPane.showInputDialog(this, "Power (W):"));
@@ -110,7 +117,6 @@ public class GUI extends JFrame {
                 JOptionPane.showMessageDialog(this, "Invalid number.");
             }
         }
-
 
         HardwareComponent newComponent;
         if (type.equalsIgnoreCase("CPU")) {
@@ -123,11 +129,13 @@ public class GUI extends JFrame {
         service.saveData("hardware.bin");
         JOptionPane.showMessageDialog(this, "Component added.");
     }
+
     //Sort Components
     private void sortComponents() {
         service.sortByPerformanceDescending();
         viewAll();
     }
+
     //Compare Components
     private void compareComponents() {
         String name1 = JOptionPane.showInputDialog(this, "First component name:");
@@ -140,9 +148,9 @@ public class GUI extends JFrame {
             JOptionPane.showMessageDialog(this, "One or both components not found.");
             return;
         }
-
         displayArea.setText(service.compare(c1, c2));
     }
+
     //Suggest an Upgrade
     private void suggestUpgrade() {
         String cpuName = JOptionPane.showInputDialog(this, "Enter CPU name:");
@@ -155,10 +163,10 @@ public class GUI extends JFrame {
             JOptionPane.showMessageDialog(this, "One or both components not found.");
             return;
         }
-
         displayArea.setText(service.suggestUpgrade(cpu, gpu));
     }
-    //Edit a Component
+
+    //Edit Component
     private void editComponent() {
         String name = JOptionPane.showInputDialog(this, "Enter name of component to edit:");
         HardwareComponent comp = service.findByName(name);
@@ -168,6 +176,7 @@ public class GUI extends JFrame {
         }
 
         double clock;
+
         while (true) {
             try {
                 clock = Double.parseDouble(JOptionPane.showInputDialog(this, "Clock Speed (GHz):"));
@@ -178,6 +187,7 @@ public class GUI extends JFrame {
         }
 
         int cache;
+
         while (true) {
             try {
                 cache = Integer.parseInt(JOptionPane.showInputDialog(this, "Cache (MB):"));
@@ -188,6 +198,7 @@ public class GUI extends JFrame {
         }
 
         int power;
+
         while (true) {
             try {
                 power = Integer.parseInt(JOptionPane.showInputDialog(this, "Power (W):"));
@@ -196,7 +207,6 @@ public class GUI extends JFrame {
                 JOptionPane.showMessageDialog(this, "Invalid number.");
             }
         }
-
 
         comp.setClockSpeed(clock);
         comp.setCache(cache);
@@ -247,7 +257,9 @@ public class GUI extends JFrame {
         String input = JOptionPane.showInputDialog(this, prompt);
         if (input == null) return;
 
+
         int value;
+
         try {
             value = Integer.parseInt(input);
         } catch (NumberFormatException ex) {
@@ -271,5 +283,4 @@ public class GUI extends JFrame {
             }
         }
     }
-
 }

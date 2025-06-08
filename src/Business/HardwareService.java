@@ -133,6 +133,7 @@ public class HardwareService {
             return "Your system is balanced.";
         }
     }
+
     //Load File Components From File
     public void loadData(String filename) {
         List<HardwareComponent> loaded = BinaryStorage.loadFromFile(filename);
@@ -146,6 +147,7 @@ public class HardwareService {
             components.addAll(loaded);
         }
     }
+
     //Pre=Saved Data
     private List<HardwareComponent> getDefaultComponents() {
         List<HardwareComponent> defaults = new ArrayList<>();

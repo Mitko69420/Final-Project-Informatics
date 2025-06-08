@@ -5,7 +5,6 @@ import Business.GPU;
 import Business.HardwareComponent;
 import Business.HardwareService;
 
-import javax.swing.*;
 import java.util.List;
 import java.util.Scanner;
 
@@ -13,21 +12,6 @@ public class CLI {
 
     public static void main(String[] args) {
 
-        System.out.println("Choose mode: 1. GUI  2. CLI");
-        Scanner scanner = new Scanner(System.in);
-        String input = scanner.nextLine();
-
-        if (input.equals("1")) {
-            SwingUtilities.invokeLater(GUI::new);
-        } else if (input.equals("2")) {
-            CLI.run();
-        } else {
-            System.out.println("Invalid choice. Exiting.");
-        }
-    }
-
-    //CLI
-    public static void run() {
         Scanner sc = new Scanner(System.in);
         HardwareService service = new HardwareService();
         service.loadData("hardware.bin");
@@ -53,6 +37,7 @@ public class CLI {
             } catch (NumberFormatException e) {
                 System.out.println("Invalid input");
             }
+
             //View All
             switch (option) {
                 case 1: {
@@ -61,6 +46,7 @@ public class CLI {
                     }
                     break;
                 }
+
                 //Compare components
                 case 2: {
                     System.out.print("Enter first component: ");
@@ -70,6 +56,7 @@ public class CLI {
                     System.out.println(service.compare(h1, h2));
                     break;
                 }
+
                 //Suggest Upgrade
                 case 3: {
                     System.out.print("Enter CPU: ");
@@ -79,6 +66,7 @@ public class CLI {
                     System.out.println(service.suggestUpgrade(cpu, gpu));
                     break;
                 }
+
                 //Add Component
                 case 4: {
                     System.out.print("Name: ");
@@ -119,7 +107,6 @@ public class CLI {
                         }
                     }
 
-
                     HardwareComponent newComponent;
                     if (type.equalsIgnoreCase("CPU")) {
                         newComponent = new CPU(name, clock, cache, power);
@@ -129,7 +116,6 @@ public class CLI {
                         System.out.println("Invalid component type.");
                         break;
                     }
-
 
                     service.addComponent(newComponent);
                     System.out.println("Added");
@@ -149,6 +135,7 @@ public class CLI {
                 case 6: {
                     service.sortByPerformanceDescending();
                     System.out.println("Sorted by performance:");
+
                     for (HardwareComponent hc : service.getAllComponents()) {
                         System.out.println(hc);
                     }
@@ -159,6 +146,7 @@ public class CLI {
                     System.out.print("Enter name of component to edit: ");
                     String nameToEdit = sc.nextLine();
                     HardwareComponent comp = service.findByName(nameToEdit);
+
                     if (comp == null) {
                         System.out.println("Component not found.");
                         break;
@@ -197,7 +185,6 @@ public class CLI {
                         }
                     }
 
-
                     comp.setClockSpeed(newClock);
                     comp.setCache(newCache);
                     comp.setPower(newPower);
@@ -207,6 +194,7 @@ public class CLI {
                     service.txtFile();
                     break;
                 }
+
                 //Delete Component
                 case 8: {
                     System.out.print("Enter name of component to delete: ");
@@ -262,7 +250,6 @@ public class CLI {
                     break;
                 }
 
-                //No Option
                 default: {
                     if (option != -1) {
                         System.out.println("Invalid option");

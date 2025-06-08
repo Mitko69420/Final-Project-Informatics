@@ -1,6 +1,7 @@
 package Persistence;
 
 import Business.HardwareComponent;
+
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,6 +17,7 @@ public class BinaryStorage {
             System.out.println("Error writing: " + e.getMessage());
         }
     }
+
     //Load from bin file
     public static List<HardwareComponent> loadFromFile(String filename) {
         File file = new File(filename);

@@ -17,7 +17,7 @@ public abstract class HardwareComponent implements Serializable {
 
     public abstract String getType();
 
-    //Getter and Setter
+    //Getters and Setters
 
     public String getName() {
         return name;
