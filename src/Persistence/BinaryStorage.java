@@ -22,7 +22,6 @@ public class BinaryStorage {
             return new ArrayList<>();
         }
 
-
         try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(file))) {
             Object obj = in.readObject();
             if (obj instanceof List<?>) {

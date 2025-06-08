@@ -1,6 +1,10 @@
 package Presentation;
 
-import Business.*;
+import Business.CPU;
+import Business.GPU;
+import Business.HardwareComponent;
+import Business.HardwareService;
+
 import javax.swing.*;
 import java.util.List;
 import java.util.Scanner;
@@ -22,6 +26,7 @@ public class CLI {
         }
     }
 
+    //CLI
     public static void run() {
         Scanner sc = new Scanner(System.in);
         HardwareService service = new HardwareService();
@@ -48,7 +53,7 @@ public class CLI {
             } catch (NumberFormatException e) {
                 System.out.println("Invalid input");
             }
-
+            //View All
             switch (option) {
                 case 1: {
                     for (HardwareComponent hc : service.getAllComponents()) {
@@ -56,7 +61,7 @@ public class CLI {
                     }
                     break;
                 }
-
+                //Compare components
                 case 2: {
                     System.out.print("Enter first component: ");
                     HardwareComponent h1 = service.findByName(sc.nextLine());
@@ -65,7 +70,7 @@ public class CLI {
                     System.out.println(service.compare(h1, h2));
                     break;
                 }
-
+                //Suggest Upgrade
                 case 3: {
                     System.out.print("Enter CPU: ");
                     HardwareComponent cpu = service.findByName(sc.nextLine());
@@ -74,7 +79,7 @@ public class CLI {
                     System.out.println(service.suggestUpgrade(cpu, gpu));
                     break;
                 }
-
+                //Add Component
                 case 4: {
                     System.out.print("Name: ");
                     String name = sc.nextLine();
@@ -129,16 +134,18 @@ public class CLI {
                     service.addComponent(newComponent);
                     System.out.println("Added");
                     service.saveData("hardware.bin");
+                    service.txtFile();
                     break;
                 }
-
+                //Exit and Save
                 case 5: {
                     service.saveData("hardware.bin");
+                    service.txtFile();
                     System.out.println("Exiting");
                     sc.close();
                     return;
                 }
-
+                //Sort by Performance
                 case 6: {
                     service.sortByPerformanceDescending();
                     System.out.println("Sorted by performance:");
@@ -147,7 +154,7 @@ public class CLI {
                     }
                     break;
                 }
-
+                //Edit Component
                 case 7: {
                     System.out.print("Enter name of component to edit: ");
                     String nameToEdit = sc.nextLine();
@@ -197,9 +204,10 @@ public class CLI {
 
                     System.out.println("Updated");
                     service.saveData("hardware.bin");
+                    service.txtFile();
                     break;
                 }
-
+                //Delete Component
                 case 8: {
                     System.out.print("Enter name of component to delete: ");
                     String name = sc.nextLine();
@@ -217,10 +225,11 @@ public class CLI {
                         service.getAllComponents().remove(toRemove);
                         System.out.println("Deleted");
                         service.saveData("hardware.bin");
+                        service.txtFile();
                     }
                     break;
                 }
-
+                //Search by Cache or Power
                 case 9: {
                     System.out.println("Search by: 1) Cache  2) Power");
                     String choice = sc.nextLine();
@@ -253,7 +262,7 @@ public class CLI {
                     break;
                 }
 
-
+                //No Option
                 default: {
                     if (option != -1) {
                         System.out.println("Invalid option");

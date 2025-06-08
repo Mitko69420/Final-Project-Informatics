@@ -2,6 +2,8 @@ package Business;
 
 import Persistence.BinaryStorage;
 
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,9 +29,10 @@ public class HardwareService {
                 components.set(maxIdx, temp);
             }
         }
+        txtFile();
     }
 
-
+    //Add Component
     public void addComponent(HardwareComponent hc) {
         for (HardwareComponent c : components) {
             if (c.getName().equalsIgnoreCase(hc.getName())) {
@@ -38,9 +41,11 @@ public class HardwareService {
             }
         }
         components.add(hc);
+        txtFile();
 
     }
 
+    //Search by Name of Component
     public HardwareComponent findByName(String name) {
         for (HardwareComponent hc : components) {
             if (hc.getName().equalsIgnoreCase(name)) {
@@ -54,6 +59,7 @@ public class HardwareService {
         return components;
     }
 
+    //Compare Components Logic
     public String compare(HardwareComponent h1, HardwareComponent h2) {
         if (h1 == null || h2 == null) return "Component(s) not found.";
         if (!h1.getType().equalsIgnoreCase(h2.getType())) return "Cannot compare different types (CPU vs GPU).";
@@ -74,7 +80,7 @@ public class HardwareService {
             result += "Both have the same clock speed.\n";
         }
 
-        // Cache comparison
+        // Cache Comparison Logic
         if (h1.getCache() > h2.getCache()) {
             result += h1.getName() + " has more cache (+" + cacheDiff + " MB).\n";
         } else if (h1.getCache() < h2.getCache()) {
@@ -83,7 +89,7 @@ public class HardwareService {
             result += "Both have the same cache.\n";
         }
 
-        // Power comparison
+        // Power Comparison Logic
         if (h1.getPower() < h2.getPower()) {
             result += h1.getName() + " is more power-efficient (−" + powerDiff + " W).\n";
         } else if (h1.getPower() > h2.getPower()) {
@@ -92,7 +98,7 @@ public class HardwareService {
             result += "Both have the same power consumption.\n";
         }
 
-        // Simple performance score
+        //Performance Score Logic
         double score1 = h1.getClockSpeed() * h1.getCache();
         double score2 = h2.getClockSpeed() * h2.getCache();
 
@@ -110,6 +116,7 @@ public class HardwareService {
         return result;
     }
 
+    //Suggest an Upgrade Logic 30%
     public String suggestUpgrade(HardwareComponent cpu, HardwareComponent gpu) {
         if (cpu == null || gpu == null) {
             return "CPU or GPU not found.";
@@ -126,7 +133,7 @@ public class HardwareService {
             return "Your system is balanced.";
         }
     }
-
+    //Load File Components
     public void loadData(String filename) {
         List<HardwareComponent> loaded = BinaryStorage.loadFromFile(filename);
         if (loaded.isEmpty()) {
@@ -139,7 +146,7 @@ public class HardwareService {
             components.addAll(loaded);
         }
     }
-
+    //Pre=Saved Data
     private List<HardwareComponent> getDefaultComponents() {
         List<HardwareComponent> defaults = new ArrayList<>();
         defaults.add(new CPU("Ryzen 5 5600X", 3.7, 32, 65));
@@ -156,6 +163,7 @@ public class HardwareService {
         BinaryStorage.saveToFile(filename, components);
     }
 
+    //Search Component by Cache
     public List<HardwareComponent> findByCache(int cacheSize) {
         List<HardwareComponent> result = new ArrayList<>();
         for (HardwareComponent c : components) {
@@ -166,6 +174,7 @@ public class HardwareService {
         return result;
     }
 
+    //Search Component by Power
     public List<HardwareComponent> findByPower(int powerWatt) {
         List<HardwareComponent> result = new ArrayList<>();
         for (HardwareComponent c : components) {
@@ -175,4 +184,27 @@ public class HardwareService {
         }
         return result;
     }
+
+    //Make txt file report
+    public void txtFile() {
+        try (PrintWriter writer = new PrintWriter("performance_report.txt")) {
+            writer.println("Hardware Performance Ranking");
+            writer.println("Name | Type | Clock (GHz) | Cache (MB) | Power (W) | Score");
+            writer.println("-------------------------------------------------------------");
+            for (HardwareComponent hc : components) {
+                double score = hc.getClockSpeed() * hc.getCache();
+                writer.printf("%s | %s | %.2f | %d | %d | %.1f%n",
+                        hc.getName(),
+                        hc.getType(),
+                        hc.getClockSpeed(),
+                        hc.getCache(),
+                        hc.getPower(),
+                        score
+                );
+            }
+        } catch (IOException e) {
+            System.out.println("Error writing report: " + e.getMessage());
+        }
+    }
+
 }

@@ -4,9 +4,10 @@ import Business.CPU;
 import Business.GPU;
 import Business.HardwareComponent;
 import Business.HardwareService;
-import java.util.List;
+
 import javax.swing.*;
 import java.awt.*;
+import java.util.List;
 
 public class GUI extends JFrame {
     private final HardwareService service;
@@ -21,11 +22,21 @@ public class GUI extends JFrame {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
 
+        //Scale the image
+        ImageIcon rawIcon = new ImageIcon(getClass().getResource("/Presentation/hardware.jpg"));
+        Image scaledImage = rawIcon.getImage().getScaledInstance(340, 150, Image.SCALE_SMOOTH);
+        ImageIcon scaledIcon = new ImageIcon(scaledImage);
+        JLabel imageLabel = new JLabel(scaledIcon);
+
+        JPanel imagePanel = new JPanel();
+        imagePanel.add(imageLabel);
+
         // Display area
         displayArea = new JTextArea();
         displayArea.setEditable(false);
         JScrollPane scrollPane = new JScrollPane(displayArea);
         add(scrollPane, BorderLayout.CENTER);
+        add(imagePanel, BorderLayout.NORTH);
 
         // Buttons
         JPanel panel = new JPanel();
@@ -41,7 +52,7 @@ public class GUI extends JFrame {
         addButton(panel, "Search by Cache/Power", e -> searchByAttribute());
         addButton(panel, "Exit", e -> System.exit(0));
 
-        add(panel, BorderLayout.NORTH);
+        add(panel, BorderLayout.WEST);
 
         setVisible(true);
     }
@@ -192,6 +203,7 @@ public class GUI extends JFrame {
         comp.setPower(power);
 
         service.saveData("hardware.bin");
+        service.txtFile();
         JOptionPane.showMessageDialog(this, "Component updated.");
     }
 
@@ -207,50 +219,56 @@ public class GUI extends JFrame {
         if (confirm == JOptionPane.YES_OPTION) {
             service.getAllComponents().remove(comp);
             service.saveData("hardware.bin");
+            service.txtFile();
             JOptionPane.showMessageDialog(this, "Component deleted.");
         }
     }
 
     private void searchByAttribute() {
-    String[] options = {"Cache", "Power"};
-    String choice = (String) JOptionPane.showInputDialog(
-        this,
-        "Search by:",
-        "Search",
-        JOptionPane.QUESTION_MESSAGE,
-        null,
-        options,
-        options[0]
-    );
-    if (choice == null) return;
+        String[] options = {"Cache", "Power"};
+        String choice = (String) JOptionPane.showInputDialog(
+                this,
+                "Search by:",
+                "Search",
+                JOptionPane.QUESTION_MESSAGE,
+                null,
+                options,
+                options[0]
+        );
+        if (choice == null) return;
 
-    String prompt = choice.equals("Cache") ? "Enter cache size (MB):" : "Enter power (W):";
-    String input = JOptionPane.showInputDialog(this, prompt);
-    if (input == null) return;
+        String prompt;
+        if (choice.equals("Cache")) {
+            prompt = "Enter cache size (MB):";
+        } else {
+            prompt = "Enter power (W):";
+        }
+        String input = JOptionPane.showInputDialog(this, prompt);
+        if (input == null) return;
 
-    int value;
-    try {
-        value = Integer.parseInt(input);
-    } catch (NumberFormatException ex) {
-        JOptionPane.showMessageDialog(this, "Invalid number.");
-        return;
-    }
+        int value;
+        try {
+            value = Integer.parseInt(input);
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(this, "Invalid number.");
+            return;
+        }
 
-    List<HardwareComponent> results;
-    if (choice.equals("Cache")) {
-        results = service.findByCache(value);
-    } else {
-        results = service.findByPower(value);
-    }
+        List<HardwareComponent> results;
+        if (choice.equals("Cache")) {
+            results = service.findByCache(value);
+        } else {
+            results = service.findByPower(value);
+        }
 
-    displayArea.setText("");
-    if (results.isEmpty()) {
-        displayArea.append("No components found for " + choice + " = " + value);
-    } else {
-        for (HardwareComponent hc : results) {
-            displayArea.append(hc + "\n");
+        displayArea.setText("");
+        if (results.isEmpty()) {
+            displayArea.append("No components found for " + choice + " = " + value);
+        } else {
+            for (HardwareComponent hc : results) {
+                displayArea.append(hc + "\n");
+            }
         }
     }
-}
 
 }

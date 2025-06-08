@@ -17,6 +17,8 @@ public abstract class HardwareComponent implements Serializable {
 
     public abstract String getType();
 
+    //Getter and Setter
+
     public String getName() {
         return name;
     }
@@ -45,6 +47,7 @@ public abstract class HardwareComponent implements Serializable {
         this.power = power;
     }
 
+    //Single Component Text
 
     @Override
     public String toString() {
